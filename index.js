@@ -1,18 +1,21 @@
 const Discord = require('discord.js')
 const bot = new Discord.Client()
+const Ping = require('./commands/ping.js')
+const Capslock = require('./moderation/capslock.js')
+const Save = require('./gamestate.js')
 
-
+console.log(Save[version])
 bot.on('guildMemberAdd', member => {
     let role = member.guild.roles.find('name', 'Stellaris Noob');
     member.addRole(role).catch(console.error)
 })
 
 bot.on('message', message => {
-  if (message.content === '!ping') {
-    message.channel.send('pong !')
+  if (Ping.match(message)) {
+    return Ping.action(message)
   }
-  if (message.content === '!lol') {
-    message.reply('Ferme ta gueule !')
+  if (message.content.length > 6 & Capslock.match(message)>0.9){
+    Capslock.action(message)
   }
 })
 
