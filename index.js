@@ -2,12 +2,12 @@ const Discord = require('discord.js')
 const bot = new Discord.Client()
 const Ping = require('./commands/ping.js')
 const Capslock = require('./moderation/capslock.js')
-const Save = require('./gamestate.js')
+const ParseSave = require('./save/parseSave.js')
+const Player = require('./save/player.js')
 
-console.log(Save[version])
 bot.on('guildMemberAdd', member => {
     let role = member.guild.roles.find('name', 'Stellaris Noob');
-    member.addRole(role).catch(console.error)
+    member.addRole(role).catch(console.error);
 })
 
 bot.on('message', message => {
@@ -16,6 +16,13 @@ bot.on('message', message => {
   }
   if (message.content.length > 6 & Capslock.match(message)>0.9){
     Capslock.action(message)
+  }
+  if (ParseSave.match(message)){
+    return ParseSave.getSaveData();
+  }
+
+  if (Player.match(message)){
+    return Player.action(message);
   }
 })
 
