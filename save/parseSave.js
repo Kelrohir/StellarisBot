@@ -6,7 +6,7 @@ var source="./save/gamestate.txt";
 
 class ParseSave {
     static match(message) {
-        return message.content.startsWith('!update');
+        return message.content.split(' ')[0] == '!update';
     }
 
     static action(list){

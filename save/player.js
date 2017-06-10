@@ -2,7 +2,7 @@ var JsonDB = require('node-json-db');
 
 class Player {
     static match(message){
-        return message.content.startsWith('!player')
+        return message.content.split(' ')[0] == '!players'
     }
 
     static action(message){
