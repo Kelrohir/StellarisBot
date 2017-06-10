@@ -1,7 +1,7 @@
 const Discord = require('discord.js')
 const bot = new Discord.Client()
 const Match = require('./commands/match.js')
-var JsonDB = require('node-json-db');
+const config = require('./conf.json');
 
 
 bot.on('guildMemberAdd', member => {
@@ -13,5 +13,4 @@ bot.on('message', message => {
   Match.action(message);
 })
 
-let token = new JsonDB("./conf.json", true, true).getData("/token");
-bot.login(token);
+bot.login(config.token);
