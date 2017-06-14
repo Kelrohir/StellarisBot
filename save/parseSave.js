@@ -3,32 +3,21 @@ var JsonDB = require('node-json-db');
 var readline = require("./readline.js")
 
 var source="./save/gamestate.txt";
+var playerList = [];
 
 class ParseSave {
-    static match(message) {
-        return message.content.split(' ')[0] == '!update';
-    }
 
-    static action(list){
+    static action(){
         try{fs.unlinkSync('./save/playerInfo.json');}catch(e){console.log('Aucune DB à supprimer')};
         
         let database = new JsonDB("./save/playerInfo.json", true, true);
 
-        for(var i = 0; i < list.length; i++){
-            let player = {};
+        this.getSaveData(database);
 
-            try {
-                player.id = database.getData("/players[-1]").id + 1;
-            } catch(error) { player.id = 1; }
-
-            player.name = list[i][0];
-            player.country = list[i][1];
-            database.push("/players[]", player, true);
-        }
+        
     }
 
-    static getSaveData(){
-        console.log("1")
+    static getSaveData(database){
         var r=readline.fopen(source,"r")
         if(r===false)
         {
@@ -36,14 +25,13 @@ class ParseSave {
         process.exit(1)
         } 
 
-        var playerList = [];
         var countPlayer = -1;
 
         do
         {
             var isPlayer;
             var line=readline.fgets(r).toString()
-
+            
             if(line.indexOf('player={') == 0)
                 isPlayer = true
 
@@ -66,8 +54,71 @@ class ParseSave {
         while (!readline.eof(r));
         readline.fclose(r);
 
-        this.action(playerList);
+        for(var i = 0; i < playerList.length; i++){
+            let player = {};
 
+            try {
+                player.id = database.getData("/players[-1]").id + 1;
+            } catch(error) { player.id = 1; }
+
+            player.name = playerList[i][0];
+            player.country = playerList[i][1];
+            player.powerScore = this.getPlayerData(playerList[i][1])[0];
+            player.fleetSize = this.getPlayerData(playerList[i][1])[1];
+            player.militaryPower = this.getPlayerData(playerList[i][1])[2];
+            database.push("/players[]", player, true);
+        }
+    }
+
+    static getPlayerData(id){
+        var r=readline.fopen(source,"r")
+        var data = [];
+        if(r===false)
+        {
+            console.log("Error, can't open ", source)
+            process.exit(1)
+        }
+        
+        do
+        {
+            var isData;
+            var isPlayerData;
+            var line=readline.fgets(r).toString()
+
+            if(line.indexOf('country={') == 0)
+                isData = true;
+            
+            if((isData == true) & (line.indexOf('}') == 0)){
+                isData = false;
+            }
+
+            if(isData){
+            }
+
+            if((isData) & (line.indexOf("\t" + id + '={') == 0)){
+                isPlayerData = true;
+            }
+            
+            if((isPlayerData) & (line.indexOf('\t}') == 0)){
+                isPlayerData = false;
+            }
+            
+            if((isData) & (isPlayerData)){
+                if(line.indexOf('power_score=')!= -1)
+                    var powerScore = parseFloat(line.split('=')[1],10);
+
+                if(line.indexOf('fleet_size=')!= -1)
+                    var fleetSize = parseInt(line.split('=')[1],10);
+
+                if(line.indexOf('military_power=')== 2)
+                    var militaryPower = parseFloat(line.split('=')[1],10);
+
+            }
+        }
+        while (!readline.eof(r));
+        readline.fclose(r);
+        data.push(powerScore,fleetSize,militaryPower);
+        return data;
     }
 
 }

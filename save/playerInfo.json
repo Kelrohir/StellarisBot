@@ -1,1 +1,52 @@
-{}
+{
+    "players": [
+        {
+            "id": 1,
+            "name": "5unkEn",
+            "country": 0,
+            "powerScore": 7.294,
+            "fleetSize": 58,
+            "militaryPower": 3311.927
+        },
+        {
+            "id": 2,
+            "name": "[WAGH] Dente1 [FR]",
+            "country": 1,
+            "powerScore": 3.98999,
+            "fleetSize": 40,
+            "militaryPower": 1298.947
+        },
+        {
+            "id": 3,
+            "name": "Kelrohir",
+            "country": 2,
+            "powerScore": 3.397,
+            "fleetSize": 27,
+            "militaryPower": 1025.771
+        },
+        {
+            "id": 4,
+            "name": "Scarevalion",
+            "country": 3,
+            "powerScore": 4.035,
+            "fleetSize": 44,
+            "militaryPower": 1270.412
+        },
+        {
+            "id": 5,
+            "name": "basox70",
+            "country": 4,
+            "powerScore": 4.294,
+            "fleetSize": 41,
+            "militaryPower": 1495.811
+        },
+        {
+            "id": 6,
+            "name": "Xelesis",
+            "country": 5,
+            "powerScore": 5.52398,
+            "fleetSize": 59,
+            "militaryPower": 1687.403
+        }
+    ]
+}

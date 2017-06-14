@@ -14,6 +14,9 @@ class Player {
             case "list":
                 return message.channel.send(this.listPlayers(database));
             
+            case "military":
+                return message.channel.send(this.listPlayers(database));
+
             default: return message.channel.send(this.listPlayers(database));
         }
     }
@@ -24,7 +27,10 @@ class Player {
         let replyContent = "List of players:";
 
         players.map(function(player) {
-            replyContent += "\n\t **" + player.name + "**";
+            replyContent += "\n\t __**" + player.name + "**__";
+            replyContent += "\n\t\t - Power score: " + player.powerScore;
+            replyContent += "\n\t\t - Fleet size: " + player.fleetSize;
+            replyContent += "\n\t\t - Military power: " + player.militaryPower;
         });
 
         return replyContent;
