@@ -21,17 +21,18 @@ class ParseSave {
         var r=readline.fopen(source,"r")
         if(r===false)
         {
-        console.log("Error, can't open ", source)
-        process.exit(1)
+            console.log("Error, can't open ", source)
+            process.exit(1)
         } 
 
         var countPlayer = -1;
 
         do
         {
-            var isPlayer;
-            var line=readline.fgets(r).toString()
+           var isPlayer;
             
+            var line= readline.fgets(r).toString();
+
             if(line.indexOf('player={') == 0)
                 isPlayer = true
 
@@ -50,6 +51,7 @@ class ParseSave {
                     playerList[countPlayer].push(country);
                 }
             }
+            var reg = new RegExp('=','g');
         }
         while (!readline.eof(r));
         readline.fclose(r);
